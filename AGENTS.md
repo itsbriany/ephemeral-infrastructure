@@ -23,9 +23,26 @@ Lucidchart checkpoint.
 - Before every commit, verify the local Git author identity matches the project owner's approved
   private configuration. Do not publish that identity in repository documentation.
 - Use focused commits with messages that explain the architectural outcome.
-- Do not commit secrets, generated cloud assemblies, local environments, or credentials.
+- Do not commit generated cloud assemblies or local virtual environments.
 - Do not publish personal location, contact information, account details, or other private context in
   documentation, examples, comments, logs, fixtures, or commit messages.
+
+## Secrets and credentials
+
+- Never commit or publish credentials or secret material, including cloud access keys, API tokens,
+  passwords, private keys, session tokens, cookies, certificates containing private keys, connection
+  strings, local environment files, or credential-provider configuration.
+- Use obviously synthetic, nonfunctional values in tests, fixtures, examples, and documentation.
+  Never copy a real value and partially redact it.
+- Load local secrets from environment variables or ignored local files. Deployed secrets must come
+  from an approved secret manager and must not be embedded in CDK context, CloudFormation templates,
+  source code, container images, build artifacts, logs, or workflow definitions.
+- Before every commit, inspect the staged diff and run the repository's secret scan when one is
+  available. Never bypass a secret-scanning or push-protection alert without confirming the match is
+  synthetic and documenting why it is safe.
+- If a secret may have been exposed, stop normal work immediately. Notify the project owner, revoke
+  or rotate the credential first, then remove it from reachable history and follow the hosting
+  provider's cache-purge process. A deletion commit alone is not remediation.
 
 ## AWS safety
 
@@ -60,5 +77,7 @@ uv run ruff format --check .
 uv run pytest -v
 uv run python app.py
 ```
+
+Also inspect `git diff --cached` for private information and credential material before committing.
 
 Milestone 0 synthesis must contain no AWS resources.
