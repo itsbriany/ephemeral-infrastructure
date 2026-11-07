@@ -1,0 +1,9 @@
+{
+  "app": "uv run python app.py",
+  "context": {
+    "deploymentRegion": "ca-central-1",
+    "@aws-cdk/core:checkSecretUsage": true,
+    "@aws-cdk/core:enablePartitionLiterals": true,
+    "@aws-cdk/aws-lambda:recognizeLayerVersion": true
+  }
+}

@@ -1,0 +1,37 @@
+[project]
+name = "ephemeral-environments"
+version = "0.1.0"
+description = "An AWS-first control plane for isolated, short-lived demo environments."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "aws-cdk-lib>=2.200.0,<3.0.0",
+    "constructs>=10.4.0,<11.0.0",
+]
+
+[build-system]
+requires = ["hatchling>=1.28.0,<2.0.0"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0,<10.0.0",
+    "ruff>=0.14.0,<0.16.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.uv]
+required-version = ">=0.10.0,<0.11.0"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ephemeral_environments"]
