@@ -5,8 +5,8 @@
 
 ## Context
 
-The platform needs a concrete regional default for reproducible synthesis and cost evaluation. The
-initial deployment testing targets ca-central-1, while the current feature set does not require a different region.
+The platform needs a concrete regional default for reproducible synthesis, service evaluation, and
+cost analysis. The current feature set does not require a different region.
 
 ## Decision
 

@@ -1,8 +1,8 @@
 # Ephemeral Environments Roadmap
 
 This is the authoritative implementation sequence. Each milestone ends at a mandatory manual
-Lucidchart checkpoint. Work on the next milestone begins only after project owner confirms that the diagram
-for the current architecture is complete.
+Lucidchart checkpoint. Work on the next milestone begins only after the project owner confirms that
+the diagram for the current architecture is complete.
 
 ## Milestone 0 — Project foundation and architectural baseline
 

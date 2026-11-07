@@ -1,6 +1,6 @@
 # Milestone 0 Architecture Checkpoint
 
-**Status:** Awaiting project owner's Lucidchart confirmation.
+**Status:** Awaiting the project owner's Lucidchart confirmation.
 
 Do not begin Milestone 1 until this checkpoint is confirmed.
 

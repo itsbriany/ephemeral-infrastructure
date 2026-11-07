@@ -12,16 +12,20 @@ Lucidchart checkpoint.
 
 - Implement only the active milestone in `ROADMAP.md`.
 - At the end of every milestone, stop before beginning the next milestone.
-- project owner owns the Lucidchart diagrams. Provide component lists, flows, tradeoffs, and small ASCII
-  sketches, but do not create or maintain the Lucidchart artifact.
-- Do not proceed until project owner confirms the current architecture is documented in Lucidchart.
+- The project owner owns the Lucidchart diagrams. Provide component lists, flows, tradeoffs, and
+  small ASCII sketches, but do not create or maintain the Lucidchart artifact.
+- Do not proceed until the project owner confirms the current architecture is documented in
+  Lucidchart.
 
 ## Source control
 
 - All project repositories must be hosted on GitHub.
-- Before every commit, verify the local Git author identity matches the approved private configuration.
+- Before every commit, verify the local Git author identity matches the project owner's approved
+  private configuration. Do not publish that identity in repository documentation.
 - Use focused commits with messages that explain the architectural outcome.
 - Do not commit secrets, generated cloud assemblies, local environments, or credentials.
+- Do not publish personal location, contact information, account details, or other private context in
+  documentation, examples, comments, logs, fixtures, or commit messages.
 
 ## AWS safety
 
