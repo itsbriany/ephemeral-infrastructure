@@ -31,7 +31,7 @@ target-version = "py312"
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 
 [tool.uv]
-required-version = ">=0.10.0,<0.11.0"
+required-version = "==0.10.4"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/ephemeral_environments"]
