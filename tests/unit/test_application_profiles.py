@@ -7,7 +7,7 @@ from ephemeral_environments.application_profiles import (
 )
 
 
-def test_catalog_contains_only_the_milestone_zero_sample_profile() -> None:
+def test_catalog_contains_only_the_approved_sample_profile() -> None:
     assert APPLICATION_CATALOG == {"hello-environment": HELLO_ENVIRONMENT}
     assert HELLO_ENVIRONMENT.health_path == "/health"
     assert HELLO_ENVIRONMENT.max_lifetime_minutes > HELLO_ENVIRONMENT.session_minutes

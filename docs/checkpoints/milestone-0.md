@@ -1,8 +1,8 @@
 # Milestone 0 Architecture Checkpoint
 
-**Status:** Awaiting the project owner's Lucidchart confirmation.
+**Status:** Complete; confirmed before Milestone 1 began.
 
-Do not begin Milestone 1 until this checkpoint is confirmed.
+This checkpoint preserved the baseline used to explain the architecture before the local API existed.
 
 ## What to draw
 

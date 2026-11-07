@@ -1,22 +1,32 @@
-# Architecture Baseline
+# Architecture Through Milestone 1
 
-Milestone 0 defines boundaries without creating cloud resources.
+Milestone 1 implements the control-plane contract locally without creating cloud resources.
 
 ```text
-+----------------------+       +---------------------------+
-| Presentation layer   | ----> | Persistent control plane  |
-| Future static client |       | Future API + orchestration|
-+----------------------+       +-------------+-------------+
-                                            |
-                                            | approved application profile
-                                            | versioned template + parameters
-                                            v
-                              +-----------------------------+
-                              | Ephemeral environment       |
-                              | One temporary workload      |
-                              | owned by one stack          |
-                              +-----------------------------+
++---------------+      +------------------+      +-------------------+
+| Local caller  | ---> | FastAPI routes   | ---> | Lifecycle service |
++---------------+      +------------------+      +---------+---------+
+                                                        / \
+                                                       /   \
+                                                      v     v
+                                           +-------------+ +------------------+
+                                           | In-memory   | | Async work queue |
+                                           | registry    | +--------+---------+
+                                           +-------------+          |
+                                                                    v
+                                                           +------------------+
+                                                           | Fake provisioner |
+                                                           +------------------+
+                                                                    |
+                                                                    v
+                                                        Simulated state changes
 ```
+
+The service accepts only an application ID from the approved catalog. It atomically reserves an
+environment record, then queues work and returns `202 Accepted`. The fake provisioner advances that
+record through the same provider-neutral lifecycle that later AWS orchestration must enforce. A
+termination request atomically changes the record to `TERMINATING` before destruction work is queued,
+so provisioning and termination cannot both advance the same state.
 
 ## Ownership rules
 
@@ -32,10 +42,11 @@ Regional control-plane and workload resources default to `ca-central-1`. A later
 frontend may require an ACM certificate in `us-east-1`; that exception does not move the application
 workloads out of the primary region.
 
-## Deliberately absent in Milestone 0
+## Deliberately absent through Milestone 1
 
 - No AWS account resources or bootstrap operation
 - No API Gateway, Lambda, DynamoDB, Step Functions, ECS, ECR, or load balancer
 - No public endpoints, DNS records, or certificates
+- No durable records, authentication, quotas, or multi-process coordination
 - No production application container
 - No Azure or GCP implementation

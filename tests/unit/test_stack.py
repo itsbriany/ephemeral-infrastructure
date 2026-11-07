@@ -13,7 +13,7 @@ from aws_cdk.assertions import Template
 from ephemeral_environments.stacks.control_plane import ControlPlaneFoundationStack
 
 
-def test_milestone_zero_stack_creates_no_aws_resources() -> None:
+def test_foundation_stack_creates_no_aws_resources() -> None:
     app = cdk.App()
     stack = ControlPlaneFoundationStack(
         app,

@@ -6,7 +6,7 @@ the diagram for the current architecture is complete.
 
 ## Milestone 0 — Project foundation and architectural baseline
 
-**Status:** Implementation complete; awaiting architecture checkpoint.
+**Status:** Complete; architecture checkpoint confirmed.
 
 Establish the GitHub repository, CDK/Python layout, lifecycle model, application-profile boundary,
 naming and tagging rules, ADRs, tests, CI, and contributor guidance. Synthesis must create no AWS
@@ -16,6 +16,8 @@ resources.
 and the Milestone 0 Lucidchart checkpoint is confirmed.
 
 ## Milestone 1 — Lifecycle model and local API contract
+
+**Status:** Implementation complete; awaiting architecture checkpoint.
 
 Implement the four API operations with local persistence and a fake provisioner. Demonstrate
 asynchronous creation, status polling, approved application selection, idempotency, and rejected

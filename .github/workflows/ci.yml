@@ -50,7 +50,7 @@ jobs:
       - name: Run tests
         run: uv run pytest -v
 
-      - name: Synthesize the Milestone 0 cloud assembly
+      - name: Synthesize the resource-free cloud assembly
         run: uv run python app.py
 
       - name: Confirm the synthesized stack contains no resources
@@ -63,6 +63,6 @@ jobs:
           template = json.loads(template_path.read_text())
           resources = template.get("Resources", {})
           if resources:
-              raise SystemExit(f"Milestone 0 unexpectedly synthesized resources: {resources}")
-          print("Milestone 0 synthesis contains no AWS resources.")
+            raise SystemExit(f"Foundation unexpectedly synthesized resources: {resources}")
+          print("Foundation synthesis contains no AWS resources.")
           PY

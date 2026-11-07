@@ -17,7 +17,7 @@ from ephemeral_environments.stacks.control_plane import ControlPlaneFoundationSt
 
 
 def build_app() -> cdk.App:
-    """Build the Milestone 0 cloud assembly without deploying it."""
+    """Build the resource-free foundation assembly without deploying it."""
     app = cdk.App(outdir="cdk.out")
     region = app.node.try_get_context("deploymentRegion") or DEFAULT_AWS_REGION
     environment = cdk.Environment(
@@ -31,7 +31,7 @@ def build_app() -> cdk.App:
         env=environment,
         description=(
             "Persistent control-plane foundation for the Ephemeral Environments platform. "
-            "Milestone 0 intentionally creates no AWS resources."
+            "The local API milestones intentionally create no AWS resources."
         ),
     )
     return app

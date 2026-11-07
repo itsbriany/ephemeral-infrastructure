@@ -9,15 +9,16 @@ targets, not current deliverables.
 
 ## Current status
 
-**Milestone 0: Project foundation and architectural baseline — awaiting architecture checkpoint.**
+**Milestone 1: Lifecycle model and local API contract — awaiting architecture checkpoint.**
 
-Milestone 0 intentionally deploys no AWS resources. The CDK application synthesizes a control-plane
-stack boundary with outputs only so the structure and validation pipeline can be established safely.
+The local FastAPI application now accepts asynchronous environment requests, exposes status polling,
+and supports early termination. An in-memory registry and fake provisioner exercise the lifecycle
+contract without creating AWS resources. Process restarts intentionally erase all local records.
 
 ## Architectural boundaries
 
-1. **Presentation layer** — a future static React client for requesting and monitoring demos.
-2. **Persistent control plane** — the future asynchronous API and lifecycle coordinator.
+1. **Presentation layer** — a future static React client; local callers currently use the HTTP API.
+2. **Control-plane contract** — a local asynchronous API, lifecycle service, and process-local registry.
 3. **Ephemeral environments** — temporary application resources owned by one environment stack.
 
 See [the architecture overview](docs/architecture/overview.md), [the roadmap](ROADMAP.md), and
@@ -33,7 +34,7 @@ See [the architecture overview](docs/architecture/overview.md), [the roadmap](RO
 ├── docs/decisions/          Architecture decision records
 ├── sample-app/              Contract for the first disposable workload
 ├── src/                     Domain and CDK code
-└── tests/                   Fast unit and synthesis assertions
+└── tests/                   Unit, API contract, and synthesis assertions
 ```
 
 The real demo applications may remain in separate private repositories. This repository owns the
@@ -52,6 +53,33 @@ uv run python app.py
 ```
 
 The final command synthesizes `cdk.out/`; it does not deploy anything.
+
+## Run the Milestone 1 API
+
+Start the local server:
+
+```bash
+uv run uvicorn ephemeral_environments.api:app --reload
+```
+
+The interactive API description is available at `http://127.0.0.1:8000/docs`. A minimal request and
+polling flow is:
+
+```bash
+curl http://127.0.0.1:8000/applications
+
+curl -i -X POST http://127.0.0.1:8000/environments \
+  -H 'Content-Type: application/json' \
+  -H 'Idempotency-Key: local-demo-001' \
+  -d '{"applicationId":"hello-environment"}'
+
+curl http://127.0.0.1:8000/environments/<environment-id>
+
+curl -i -X DELETE http://127.0.0.1:8000/environments/<environment-id>
+```
+
+The returned `example.invalid` endpoint is deliberately non-resolving. It proves when an endpoint
+becomes visible in the lifecycle without pretending that a workload exists.
 
 ## Deployment policy
 

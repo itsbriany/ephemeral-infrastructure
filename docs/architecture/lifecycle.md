@@ -25,4 +25,6 @@ REQUESTED -> PROVISIONING -> VERIFYING -> READY
 - Session expiration is calculated from readiness, while maximum infrastructure age is calculated
   from the original request.
 
-The executable transition table lives in `src/ephemeral_environments/lifecycle.py`.
+The executable transition table lives in `src/ephemeral_environments/lifecycle.py`. In Milestone 1,
+the fake provisioner uses conditional updates so an early termination request prevents later
+provisioning steps from advancing the record.
