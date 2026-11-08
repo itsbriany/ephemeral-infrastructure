@@ -80,4 +80,4 @@ uv run python app.py
 
 Also inspect `git diff --cached` for private information and credential material before committing.
 
-Milestone 0 synthesis must contain no AWS resources.
+Milestone 2 synthesis must contain only persistent control-plane resources and no ECS workloads.

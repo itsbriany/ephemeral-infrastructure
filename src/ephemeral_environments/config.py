@@ -1,4 +1,4 @@
-"""Stable Milestone 0 platform configuration."""
+"""Stable platform configuration shared by the CDK entry point."""
 
 PLATFORM_ID = "ephemeral-environments"
 DEFAULT_AWS_REGION = "ca-central-1"

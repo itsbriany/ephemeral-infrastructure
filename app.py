@@ -13,11 +13,11 @@ os.environ.setdefault(
 import aws_cdk as cdk
 
 from ephemeral_environments.config import CONTROL_PLANE_STACK_NAME, DEFAULT_AWS_REGION
-from ephemeral_environments.stacks.control_plane import ControlPlaneFoundationStack
+from ephemeral_environments.stacks.control_plane import ControlPlaneStack
 
 
 def build_app() -> cdk.App:
-    """Build the resource-free foundation assembly without deploying it."""
+    """Build the persistent control-plane assembly without deploying it."""
     app = cdk.App(outdir="cdk.out")
     region = app.node.try_get_context("deploymentRegion") or DEFAULT_AWS_REGION
     environment = cdk.Environment(
@@ -25,13 +25,13 @@ def build_app() -> cdk.App:
         region=region,
     )
 
-    ControlPlaneFoundationStack(
+    ControlPlaneStack(
         app,
         CONTROL_PLANE_STACK_NAME,
         env=environment,
         description=(
-            "Persistent control-plane foundation for the Ephemeral Environments platform. "
-            "The local API milestones intentionally create no AWS resources."
+            "Persistent API and registry for the Ephemeral Environments platform. "
+            "Milestone 2 intentionally creates no workload resources."
         ),
     )
     return app

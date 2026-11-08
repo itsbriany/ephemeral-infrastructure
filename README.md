@@ -9,16 +9,18 @@ targets, not current deliverables.
 
 ## Current status
 
-**Milestone 1: Lifecycle model and local API contract — awaiting architecture checkpoint.**
+**Milestone 2: Minimal persistent AWS control plane — implemented and synthesized; not deployed.**
 
-The local FastAPI application now accepts asynchronous environment requests, exposes status polling,
-and supports early termination. An in-memory registry and fake provisioner exercise the lifecycle
-contract without creating AWS resources. Process restarts intentionally erase all local records.
+The CDK stack defines an API Gateway HTTP API, operation-specific Python Lambda functions, a durable
+DynamoDB registry, retained logs, route throttling, and narrowly scoped IAM permissions. Creation is
+transactionally idempotent, while termination uses a conditional lifecycle update. No AWS deployment
+or workload resources have been created. The Milestone 1 FastAPI simulation remains available for
+local lifecycle demonstrations.
 
 ## Architectural boundaries
 
 1. **Presentation layer** — a future static React client; local callers currently use the HTTP API.
-2. **Control-plane contract** — a local asynchronous API, lifecycle service, and process-local registry.
+2. **Control plane** — a persistent AWS API and registry, plus a local lifecycle simulator.
 3. **Ephemeral environments** — temporary application resources owned by one environment stack.
 
 See [the architecture overview](docs/architecture/overview.md), [the roadmap](ROADMAP.md), and
@@ -54,7 +56,7 @@ uv run python app.py
 
 The final command synthesizes `cdk.out/`; it does not deploy anything.
 
-## Run the Milestone 1 API
+## Run the local lifecycle simulator
 
 Start the local server:
 
@@ -83,5 +85,5 @@ becomes visible in the lifecycle without pretending that a workload exists.
 
 ## Deployment policy
 
-No AWS deployment is authorized by repository setup or by a successful synthesis. Deployment begins
-only in a later milestone and requires an explicit review of the generated changes.
+No AWS deployment is authorized by repository setup or by a successful synthesis. Every deployment,
+update, and destruction operation requires explicit approval after review of the generated changes.

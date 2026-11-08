@@ -50,19 +50,38 @@ jobs:
       - name: Run tests
         run: uv run pytest -v
 
-      - name: Synthesize the resource-free cloud assembly
+      - name: Synthesize the Milestone 2 control plane
         run: uv run python app.py
 
-      - name: Confirm the synthesized stack contains no resources
+      - name: Confirm the synthesized workload boundary
         run: |
           uv run python - <<'PY'
           import json
+          from collections import Counter
           from pathlib import Path
 
           template_path = Path("cdk.out/EphemeralEnvironments-ControlPlane.template.json")
           template = json.loads(template_path.read_text())
           resources = template.get("Resources", {})
-          if resources:
-            raise SystemExit(f"Foundation unexpectedly synthesized resources: {resources}")
-          print("Foundation synthesis contains no AWS resources.")
+          resource_types = Counter(resource["Type"] for resource in resources.values())
+          expected = {
+              "AWS::ApiGatewayV2::Api": 1,
+              "AWS::DynamoDB::Table": 1,
+              "AWS::Lambda::Function": 4,
+          }
+          for resource_type, count in expected.items():
+              if resource_types[resource_type] != count:
+                  raise SystemExit(
+                      f"Expected {count} {resource_type} resources; found "
+                      f"{resource_types[resource_type]}"
+                  )
+          forbidden_prefixes = ("AWS::ECS::", "AWS::StepFunctions::")
+          forbidden = sorted(
+              resource_type
+              for resource_type in resource_types
+              if resource_type.startswith(forbidden_prefixes)
+          )
+          if forbidden:
+              raise SystemExit(f"Milestone 2 synthesized workload resources: {forbidden}")
+          print("Milestone 2 contains the persistent control plane and no workload resources.")
           PY

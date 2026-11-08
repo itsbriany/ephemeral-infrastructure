@@ -1,32 +1,24 @@
-# Architecture Through Milestone 1
+# Architecture Through Milestone 2
 
-Milestone 1 implements the control-plane contract locally without creating cloud resources.
+Milestone 2 makes the request registry durable and places the four public operations behind an AWS
+HTTP API. The local Milestone 1 simulator remains a separate teaching and contract-testing path.
 
 ```text
-+---------------+      +------------------+      +-------------------+
-| Local caller  | ---> | FastAPI routes   | ---> | Lifecycle service |
-+---------------+      +------------------+      +---------+---------+
-                                                        / \
-                                                       /   \
-                                                      v     v
-                                           +-------------+ +------------------+
-                                           | In-memory   | | Async work queue |
-                                           | registry    | +--------+---------+
-                                           +-------------+          |
-                                                                    v
-                                                           +------------------+
-                                                           | Fake provisioner |
-                                                           +------------------+
-                                                                    |
-                                                                    v
-                                                        Simulated state changes
+Caller -> API Gateway HTTP API -> operation-specific Lambda -> DynamoDB registry
+                    |                       |
+                    v                       v
+             access log group       function log groups
 ```
 
-The service accepts only an application ID from the approved catalog. It atomically reserves an
-environment record, then queues work and returns `202 Accepted`. The fake provisioner advances that
-record through the same provider-neutral lifecycle that later AWS orchestration must enforce. A
-termination request atomically changes the record to `TERMINATING` before destruction work is queued,
-so provisioning and termination cannot both advance the same state.
+The API accepts only an application ID from the approved catalog. Creation atomically writes an
+environment record and a hashed idempotency marker, then returns `202 Accepted`. Termination uses a
+conditional update to move an eligible record to `TERMINATING`. No cloud provisioner consumes these
+states yet: records remain `REQUESTED` or `TERMINATING` until later workflow milestones.
+
+Each operation has its own Lambda function and execution role. This makes the route-to-permission
+mapping visible: listing applications needs no table access; creation can read and transact; retrieval
+can read; termination can read and update. API and function log groups retain non-sensitive,
+correlated records for 30 days.
 
 ## Ownership rules
 
@@ -42,11 +34,11 @@ Regional control-plane and workload resources default to `ca-central-1`. A later
 frontend may require an ACM certificate in `us-east-1`; that exception does not move the application
 workloads out of the primary region.
 
-## Deliberately absent through Milestone 1
+## Deliberately absent through Milestone 2
 
-- No AWS account resources or bootstrap operation
-- No API Gateway, Lambda, DynamoDB, Step Functions, ECS, ECR, or load balancer
-- No public endpoints, DNS records, or certificates
-- No durable records, authentication, quotas, or multi-process coordination
+- No deployed AWS resources without a separate explicit deployment approval
+- No Step Functions, ECS, ECR, load balancer, or ephemeral application environment
+- No DNS records, certificates, or visitor frontend
+- No authentication, visitor identity, quotas, or comprehensive abuse controls
 - No production application container
 - No Azure or GCP implementation

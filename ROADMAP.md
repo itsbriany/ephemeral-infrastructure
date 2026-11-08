@@ -17,7 +17,7 @@ and the Milestone 0 Lucidchart checkpoint is confirmed.
 
 ## Milestone 1 — Lifecycle model and local API contract
 
-**Status:** Implementation complete; awaiting architecture checkpoint.
+**Status:** Complete; architecture checkpoint confirmed.
 
 Implement the four API operations with local persistence and a fake provisioner. Demonstrate
 asynchronous creation, status polling, approved application selection, idempotency, and rejected
@@ -27,6 +27,8 @@ invalid transitions without touching AWS.
 requests cannot create duplicate environments.
 
 ## Milestone 2 — Minimal persistent AWS control plane
+
+**Status:** Implementation complete and synthesized; deployment and architecture checkpoint pending.
 
 Deploy API Gateway, Lambda, DynamoDB, CloudWatch retention, and narrow IAM permissions. Persist
 environment requests and protect updates with DynamoDB conditions. Do not create ECS workloads yet.
