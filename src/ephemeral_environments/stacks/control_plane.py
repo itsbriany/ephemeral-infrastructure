@@ -50,7 +50,11 @@ class ControlPlaneStack(Stack):
             handler="ephemeral_environments.aws_api.create_environment",
             source_directory=source_directory,
             table=registry,
-            table_actions=("dynamodb:GetItem", "dynamodb:TransactWriteItems"),
+            table_actions=(
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:TransactWriteItems",
+            ),
         )
         get_function = self._function(
             "GetEnvironment",

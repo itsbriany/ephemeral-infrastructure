@@ -28,7 +28,7 @@ requests cannot create duplicate environments.
 
 ## Milestone 2 — Minimal persistent AWS control plane
 
-**Status:** Implementation complete and synthesized; deployment and architecture checkpoint pending.
+**Status:** Complete; deployed smoke test and architecture checkpoint confirmed.
 
 Deploy API Gateway, Lambda, DynamoDB, CloudWatch retention, and narrow IAM permissions. Persist
 environment requests and protect updates with DynamoDB conditions. Do not create ECS workloads yet.

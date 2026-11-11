@@ -111,7 +111,13 @@ def test_each_lambda_role_has_only_its_required_table_actions() -> None:
     assert all("ManagedPolicyArns" not in role["Properties"] for role in roles)
     assert table_action_sets == {
         frozenset(),
-        frozenset({"dynamodb:GetItem", "dynamodb:TransactWriteItems"}),
+        frozenset(
+            {
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:TransactWriteItems",
+            }
+        ),
         frozenset({"dynamodb:GetItem"}),
         frozenset({"dynamodb:GetItem", "dynamodb:UpdateItem"}),
     }
